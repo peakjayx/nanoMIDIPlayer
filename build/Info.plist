@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>nanoMIDIPlayer</string>
+    <key>CFBundleDisplayName</key>
+    <string>nanoMIDIPlayer</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.nanomidiplayer.app</string>
+    <key>CFBundleVersion</key>
+    <string>11.69.679</string>
+    <key>CFBundleShortVersionString</key>
+    <string>11.69.679</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleExecutable</key>
+    <string>nanoMIDIPlayer</string>
+    <key>CFBundleIconFile</key>
+    <string>nanoMIDIPlayer.icns</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>11.0</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true/>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.music</string>
+    <!-- begruendung fuer den Bedienungshilfen-Dialog -->
+    <key>NSAppleEventsUsageDescription</key>
+    <string>nanoMIDIPlayer sendet Tastendruecke an das fokussierte Fenster, um MIDI-Noten auf virtuellen Pianos zu spielen.</string>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>MIDI File</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.midi-audio</string>
+            </array>
+        </dict>
+    </array>
+</dict>
+</plist>

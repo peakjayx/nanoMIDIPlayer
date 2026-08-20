@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="nanoMIDIPlayer.UI.MainWindow"
+        Title="nanoMIDIPlayer" Height="560" Width="600"
+        CanResize="False" WindowStartupLocation="CenterScreen"
+        Icon="/Assets/icon.png" Background="#0a0a0a"
+        FontFamily="{StaticResource MonoFont}">
+    <Grid ColumnDefinitions="Auto,*">
+
+        <!-- sidebar -->
+        <Border Grid.Column="0" Background="{StaticResource NavBack}" Width="150">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*,Auto">
+
+                <Image Grid.Row="0" Source="/Assets/banner.png" Width="86" Height="26"
+                       Margin="20" HorizontalAlignment="Left"/>
+
+                <Button Grid.Row="1" Theme="{StaticResource NavButton}" Click="ShowMidi">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/piano.png" Width="20" Height="20"/>
+                        <TextBlock Text="MIDI Player" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Row="2" Theme="{StaticResource NavButton}" Click="ShowDrums">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/drum.png" Width="20" Height="20"/>
+                        <TextBlock Text="Drums Player" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Row="3" Theme="{StaticResource NavButton}" Click="ShowHub">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/piano.png" Width="20" Height="20"/>
+                        <TextBlock Text="MIDI Hub" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Row="4" Theme="{StaticResource NavButton}" Click="ShowQwerty">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/keyboard.png" Width="18" Height="18"/>
+                        <TextBlock Text="MIDI To QWERTY" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="13"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Row="5" Theme="{StaticResource NavButton}" Click="ShowSettings">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/cogwheel.png" Width="18" Height="18"/>
+                        <TextBlock Text="Settings" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Grid.Row="7" Theme="{StaticResource NavButton}" Click="ShowInfo" Height="48">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/info.png" Width="18" Height="18"/>
+                        <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" FontSize="14"
+                                   Foreground="#191919" Text="nanoMIDIPlayer&#10;v11.69.679"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- content -->
+        <ContentControl Grid.Column="1" x:Name="MainContent"/>
+    </Grid>
+</Window>

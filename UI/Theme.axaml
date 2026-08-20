@@ -1,0 +1,286 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- theme farben (aus activeTheme.json) -->
+    <SolidColorBrush x:Key="NavBack" Color="#050505"/>
+    <SolidColorBrush x:Key="NavHover" Color="#121212"/>
+    <SolidColorBrush x:Key="MidiBack" Color="#0a0a0a"/>
+    <SolidColorBrush x:Key="ConsoleBack" Color="#000000"/>
+    <SolidColorBrush x:Key="TextColor" Color="#ffffff"/>
+    <SolidColorBrush x:Key="TextDisabled" Color="#737373"/>
+    <SolidColorBrush x:Key="SwitchOn" Color="#008000"/>
+    <SolidColorBrush x:Key="SwitchOff" Color="#ff0000"/>
+    <SolidColorBrush x:Key="SwitchCircle" Color="#262626"/>
+    <SolidColorBrush x:Key="SwitchCircleHover" Color="#3c3c3c"/>
+    <SolidColorBrush x:Key="BtnColor" Color="#1a1a1a"/>
+    <SolidColorBrush x:Key="BtnHover" Color="#333333"/>
+    <SolidColorBrush x:Key="OptionBack" Color="#000000"/>
+    <SolidColorBrush x:Key="PlayColor" Color="#008000"/>
+    <SolidColorBrush x:Key="PlayHover" Color="#006400"/>
+    <SolidColorBrush x:Key="StopDisabled" Color="#444444"/>
+    <SolidColorBrush x:Key="StopColor" Color="#cc3232"/>
+    <SolidColorBrush x:Key="StopHover" Color="#b03030"/>
+    <SolidColorBrush x:Key="SliderBack" Color="#404040"/>
+    <SolidColorBrush x:Key="SliderFill" Color="#1a1a1a"/>
+    <SolidColorBrush x:Key="SliderStroke" Color="#2c2c2c"/>
+    <SolidColorBrush x:Key="ValueBoxBack" Color="#0a0a0a"/>
+    <SolidColorBrush x:Key="ValueBoxBorder" Color="#1a1a1a"/>
+
+    <!-- monospace mit fallback-kette: windows / macOS / linux -->
+    <FontFamily x:Key="MonoFont">Consolas, Menlo, Monaco, DejaVu Sans Mono, Courier New</FontFamily>
+
+    <!-- ctk switch (rot=aus, gruen=an) -->
+    <ControlTheme x:Key="{x:Type CheckBox}" TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel Orientation="Horizontal" Background="Transparent">
+                    <Border Name="track" Width="42" Height="22" CornerRadius="11"
+                            Background="{StaticResource SwitchOff}" VerticalAlignment="Center">
+                        <Border Name="thumb" Width="14" Height="14" CornerRadius="7"
+                                Background="{StaticResource SwitchCircle}"
+                                HorizontalAlignment="Left" Margin="4,0,0,0"/>
+                    </Border>
+                    <ContentPresenter Name="PART_ContentPresenter" Margin="10,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      FontFamily="{TemplateBinding FontFamily}"
+                                      FontSize="{TemplateBinding FontSize}"/>
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:checked /template/ Border#track">
+            <Setter Property="Background" Value="{StaticResource SwitchOn}"/>
+        </Style>
+        <Style Selector="^:checked /template/ Border#thumb">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+        </Style>
+        <Style Selector="^:pointerover /template/ Border#thumb">
+            <Setter Property="Background" Value="{StaticResource SwitchCircleHover}"/>
+        </Style>
+    </ControlTheme>
+
+    <!-- ctk button (Tag = hover farbe) -->
+    <ControlTheme x:Key="CtkButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource BtnColor}"/>
+        <Setter Property="Tag" Value="{StaticResource BtnHover}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="b" Background="{TemplateBinding Background}" CornerRadius="6">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      FontFamily="{TemplateBinding FontFamily}"
+                                      FontSize="{TemplateBinding FontSize}"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#b">
+            <Setter Property="Background" Value="{Binding $parent[Button].Tag}"/>
+        </Style>
+        <Style Selector="^:disabled /template/ Border#b">
+            <Setter Property="Opacity" Value="0.6"/>
+        </Style>
+    </ControlTheme>
+
+    <!-- nav button -->
+    <ControlTheme x:Key="NavButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="b" Background="{TemplateBinding Background}">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      FontFamily="{TemplateBinding FontFamily}"
+                                      VerticalContentAlignment="Center"
+                                      HorizontalContentAlignment="Left"
+                                      Margin="15,0,0,0"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#b">
+            <Setter Property="Background" Value="{StaticResource NavHover}"/>
+        </Style>
+    </ControlTheme>
+
+    <!-- ctk entry -->
+    <ControlTheme x:Key="CtkEntry" TargetType="TextBox">
+        <Setter Property="Background" Value="{StaticResource ValueBoxBack}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource TextColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ValueBoxBorder}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1" CornerRadius="6">
+                    <ScrollViewer Name="PART_ScrollViewer" Margin="6,0"
+                                  VerticalAlignment="Center"
+                                  HorizontalScrollBarVisibility="Hidden"
+                                  VerticalScrollBarVisibility="Hidden">
+                        <TextPresenter Name="PART_TextPresenter"
+                                       Text="{TemplateBinding Text, Mode=TwoWay}"
+                                       CaretBrush="{TemplateBinding CaretBrush}"
+                                       CaretIndex="{TemplateBinding CaretIndex}"
+                                       SelectionBrush="{TemplateBinding SelectionBrush}"
+                                       SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                       SelectionStart="{TemplateBinding SelectionStart}"
+                                       SelectionEnd="{TemplateBinding SelectionEnd}"
+                                       TextAlignment="{TemplateBinding TextAlignment}"
+                                       VerticalAlignment="Center"/>
+                    </ScrollViewer>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <!-- ctk slider -->
+    <ControlTheme x:Key="SliderThumb" TargetType="Thumb">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Ellipse Width="18" Height="18" Fill="{StaticResource SliderFill}"
+                         Stroke="{StaticResource SliderStroke}" StrokeThickness="1"/>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="SliderRepeat" TargetType="RepeatButton">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="Transparent"/>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="CtkSlider" TargetType="Slider">
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid VerticalAlignment="Center">
+                    <Border Height="6" CornerRadius="3" VerticalAlignment="Center"
+                            Background="{StaticResource SliderBack}"/>
+                    <Track Name="PART_Track" Orientation="Horizontal"
+                           Minimum="{TemplateBinding Minimum}"
+                           Maximum="{TemplateBinding Maximum}"
+                           Value="{TemplateBinding Value, Mode=TwoWay}"
+                           IsDirectionReversed="{TemplateBinding IsDirectionReversed}">
+                        <Track.DecreaseButton>
+                            <RepeatButton Name="PART_DecreaseButton"
+                                          Theme="{StaticResource SliderRepeat}"/>
+                        </Track.DecreaseButton>
+                        <Track.IncreaseButton>
+                            <RepeatButton Name="PART_IncreaseButton"
+                                          Theme="{StaticResource SliderRepeat}"/>
+                        </Track.IncreaseButton>
+                        <Thumb Name="thumb" Theme="{StaticResource SliderThumb}"
+                               Width="18" Height="18" Margin="0" Padding="0"/>
+                    </Track>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <!-- ctk optionmenu (combobox) -->
+    <ControlTheme x:Key="{x:Type ComboBoxItem}" TargetType="ComboBoxItem">
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="b" Background="Transparent" Padding="10,5">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      FontFamily="{TemplateBinding FontFamily}"
+                                      FontSize="{TemplateBinding FontSize}"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:pointerover /template/ Border#b">
+            <Setter Property="Background" Value="{StaticResource BtnColor}"/>
+        </Style>
+        <Style Selector="^:selected /template/ Border#b">
+            <Setter Property="Background" Value="{StaticResource BtnColor}"/>
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="OptionMenu" TargetType="ComboBox">
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid>
+                    <Border CornerRadius="6" Background="{StaticResource OptionBack}">
+                        <Grid ColumnDefinitions="*,30">
+                            <ContentControl Grid.Column="0" Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            Content="{TemplateBinding SelectionBoxItem}"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            FontFamily="{TemplateBinding FontFamily}"
+                                            FontSize="{TemplateBinding FontSize}"/>
+                            <Border Grid.Column="1" Background="{StaticResource BtnColor}"
+                                    CornerRadius="0,6,6,0">
+                                <Path Data="M0,0 L8,0 L4,5 Z" Fill="White"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Popup Name="PART_Popup"
+                           IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+                           Placement="BottomEdgeAlignedLeft"
+                           WindowManagerAddShadowHint="False">
+                        <Border Background="{StaticResource OptionBack}" CornerRadius="6"
+                                Margin="0,2,0,0"
+                                MinWidth="{Binding $parent[ComboBox].Bounds.Width}">
+                            <ScrollViewer MaxHeight="200">
+                                <ItemsPresenter Name="PART_ItemsPresenter"/>
+                            </ScrollViewer>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+</ResourceDictionary>

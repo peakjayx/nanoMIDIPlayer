@@ -1,0 +1,77 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="nanoMIDIPlayer.UI.SettingsView"
+             FontFamily="{StaticResource MonoFont}">
+    <Border Background="{StaticResource MidiBack}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="14,10,14,14">
+
+                <!-- MIDI Player Settings -->
+                <Grid>
+                    <TextBlock Text="MIDI Player Settings" FontSize="20" HorizontalAlignment="Left"/>
+                    <Button Content="Clear MIDI List" Theme="{StaticResource CtkButton}" Width="159"
+                            HorizontalAlignment="Right" Click="ClearMidiList"/>
+                </Grid>
+
+                <Grid Margin="0,10,0,0" ColumnDefinitions="Auto,*">
+
+                    <!-- switches -->
+                    <StackPanel Grid.Column="0">
+                        <CheckBox x:Name="Sustain" Content="Sustain" Margin="4,4"/>
+                        <CheckBox x:Name="NoDoubles" Content="No Doubles" Margin="4,4"/>
+                        <CheckBox x:Name="Velocity" Content="Velocity" Margin="4,4"/>
+                        <CheckBox x:Name="Keys88" Content="88 Keys" Margin="4,4"/>
+                        <CheckBox x:Name="LoopSong" Content="Loop Song" Margin="4,10,4,4"/>
+                        <CheckBox x:Name="ReleaseOnPause" Content="Release keys on Pause" Margin="4,4"/>
+                    </StackPanel>
+
+                    <!-- right column sliders -->
+                    <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                        <CheckBox x:Name="CustomHold" Content="Custom Hold Length" Margin="0,4"/>
+                        <Grid Margin="0,2" ColumnDefinitions="90,*,Auto">
+                            <TextBlock Text="Note Length" VerticalAlignment="Center" FontSize="13"/>
+                            <Slider Grid.Column="1" x:Name="NoteLengthSlider" Theme="{StaticResource CtkSlider}"
+                                    Minimum="0" Maximum="10" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="2" x:Name="NoteLengthEntry" Theme="{StaticResource CtkEntry}"
+                                     Width="55" Margin="8,0,0,0" TextAlignment="Center" KeyUp="NoteLenEntry"/>
+                        </Grid>
+
+                        <CheckBox x:Name="RandomFail" Content="Random Fail" Margin="0,10,0,4"/>
+                        <Grid Margin="0,2" ColumnDefinitions="110,*,Auto">
+                            <TextBlock Text="Speed Fail %" VerticalAlignment="Center" FontSize="13"/>
+                            <Slider Grid.Column="1" x:Name="SpeedFailSlider" Theme="{StaticResource CtkSlider}"
+                                    Minimum="0" Maximum="100" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="2" x:Name="SpeedFailEntry" Theme="{StaticResource CtkEntry}"
+                                     Width="50" Margin="8,0,0,0" TextAlignment="Center" KeyUp="SpeedFailEntryChg"/>
+                        </Grid>
+                        <Grid Margin="0,2" ColumnDefinitions="110,*,Auto">
+                            <TextBlock Text="Transpose Fail %" VerticalAlignment="Center" FontSize="13"/>
+                            <Slider Grid.Column="1" x:Name="TransFailSlider" Theme="{StaticResource CtkSlider}"
+                                    Minimum="0" Maximum="100" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="2" x:Name="TransFailEntry" Theme="{StaticResource CtkEntry}"
+                                     Width="50" Margin="8,0,0,0" TextAlignment="Center" KeyUp="TransFailEntryChg"/>
+                        </Grid>
+
+                        <Grid Margin="0,12,0,0" ColumnDefinitions="130,*">
+                            <TextBlock Text="Keyboard Module" VerticalAlignment="Center" FontSize="13"/>
+                            <ComboBox Grid.Column="1" x:Name="SendMode" Theme="{StaticResource OptionMenu}"
+                                      HorizontalAlignment="Stretch" SelectionChanged="SendModeChanged"/>
+                        </Grid>
+
+                        <TextBlock x:Name="SendModeHint" Foreground="#737373" FontSize="11"
+                                   TextWrapping="Wrap" Margin="130,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Appearance -->
+                <TextBlock Text="Appearance Settings" FontSize="20" Margin="0,20,0,0"/>
+                <StackPanel Margin="4,10,0,0">
+                    <CheckBox x:Name="Topmost" Content="Always on top" Margin="0,4"/>
+                    <CheckBox x:Name="Timestamp" Content="Timestamp" Margin="0,4"/>
+                </StackPanel>
+
+                <TextBlock x:Name="SaveHint" Foreground="#737373" Margin="4,14,0,0" FontSize="12"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

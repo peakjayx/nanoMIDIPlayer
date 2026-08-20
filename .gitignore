@@ -1,0 +1,19 @@
+# build output
+bin/
+obj/
+dist/
+
+# ide
+.vs/
+.idea/
+*.user
+*.suo
+
+# os
+.DS_Store
+Thumbs.db
+
+# release tool
+tools/__pycache__/
+*.pyc
+.env

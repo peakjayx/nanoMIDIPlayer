@@ -1,0 +1,137 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="nanoMIDIPlayer.UI.MidiPlayerView"
+             FontFamily="{StaticResource MonoFont}">
+    <Border Background="{StaticResource MidiBack}">
+        <Grid Margin="12,8,12,8"
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <!-- output device row -->
+            <Grid Grid.Row="0" Margin="0,4,0,0">
+                <TextBlock Text="MIDI Output Device" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <CheckBox x:Name="UseMidiSwitch" Content="Use MIDI Output" HorizontalAlignment="Right"/>
+            </Grid>
+
+            <!-- output dropdown + refresh -->
+            <Grid Grid.Row="1" Margin="0,4,0,0" ColumnDefinitions="*,34">
+                <ComboBox Grid.Column="0" x:Name="OutputDevice" Theme="{StaticResource OptionMenu}"
+                          HorizontalAlignment="Stretch"/>
+                <Button Grid.Column="1" Theme="{StaticResource CtkButton}" Width="30" Margin="4,0,0,0">
+                    <Image Source="/Assets/reset.png" Width="16" Height="16"/>
+                </Button>
+            </Grid>
+
+            <!-- file path row -->
+            <Grid Grid.Row="2" Margin="0,10,0,0">
+                <TextBlock Text="MIDI File Path" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button x:Name="SelectFileBtn" Content="Select File" Theme="{StaticResource CtkButton}"
+                        Width="90" HorizontalAlignment="Right" Click="SelectFile"/>
+            </Grid>
+
+            <!-- file dropdown -->
+            <ComboBox Grid.Row="3" x:Name="FileDropdown" Theme="{StaticResource OptionMenu}"
+                      HorizontalAlignment="Stretch" Margin="0,6,0,0" SelectionChanged="FileSelected"/>
+
+            <!-- middle band: switches | hotkeys | console -->
+            <Grid Grid.Row="4" Margin="0,10,0,0" ColumnDefinitions="Auto,*,170">
+
+                <!-- switches -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                    <CheckBox x:Name="SustainSwitch" Content="Sustain" Margin="0,3"/>
+                    <CheckBox x:Name="NoDoublesSwitch" Content="No Doubles" Margin="0,3"/>
+                    <CheckBox x:Name="VelocitySwitch" Content="Velocity" Margin="0,3"/>
+                    <CheckBox x:Name="Keys88Switch" Content="88 Keys" Margin="0,3"/>
+                    <CheckBox x:Name="SwapYZSwitch" Content="Swap Y/Z" Margin="0,3"/>
+                </StackPanel>
+
+                <!-- hotkeys -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="12,0,0,0">
+                    <Grid Margin="0,2" ColumnDefinitions="62,Auto">
+                        <TextBlock Text="Play:" FontSize="13" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="PlayHk" Content="F1" Theme="{StaticResource CtkButton}" Width="50"/>
+                    </Grid>
+                    <Grid Margin="0,2" ColumnDefinitions="62,Auto">
+                        <TextBlock Text="Pause:" FontSize="13" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="PauseHk" Content="F2" Theme="{StaticResource CtkButton}" Width="50"/>
+                    </Grid>
+                    <Grid Margin="0,2" ColumnDefinitions="62,Auto">
+                        <TextBlock Text="Stop:" FontSize="13" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="StopHk" Content="F3" Theme="{StaticResource CtkButton}" Width="50"/>
+                    </Grid>
+                    <Grid Margin="0,2" ColumnDefinitions="62,Auto">
+                        <TextBlock Text="Speed Up:" FontSize="13" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="SpeedUpHk" Content="F4" Theme="{StaticResource CtkButton}" Width="50"/>
+                    </Grid>
+                    <Grid Margin="0,2" ColumnDefinitions="62,Auto">
+                        <TextBlock Text="Slow Down:" FontSize="13" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="SlowHk" Content="F5" Theme="{StaticResource CtkButton}" Width="50"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- console -->
+                <Border Grid.Column="2" Width="170" Height="155" Background="{StaticResource ConsoleBack}"
+                        VerticalAlignment="Top">
+                    <ScrollViewer x:Name="ConsoleScroll" Padding="4" VerticalScrollBarVisibility="Auto">
+                        <TextBlock x:Name="ConsoleText" FontSize="11"
+                                   Foreground="White" TextWrapping="Wrap"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+
+            <!-- pitch + key -->
+            <Grid Grid.Row="5" Margin="0,10,0,0" ColumnDefinitions="*,*">
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                    <TextBlock Text="Pitch" FontSize="14" HorizontalAlignment="Center"/>
+                    <ComboBox x:Name="PitchDropdown" Theme="{StaticResource OptionMenu}" Width="130"
+                              Margin="0,4,0,0" SelectionChanged="PitchChanged"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Text="Key" FontSize="14" HorizontalAlignment="Center"/>
+                    <ComboBox x:Name="KeyDropdown" Theme="{StaticResource OptionMenu}" Width="90"
+                              Margin="0,4,0,0" SelectionChanged="KeyChanged"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- finger limit -->
+            <Grid Grid.Row="6" Margin="0,10,0,0" ColumnDefinitions="Auto,*,Auto,Auto">
+                <TextBlock Grid.Column="0" Text="Fingers" FontSize="14" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <Slider Grid.Column="1" x:Name="FingerSlider" Theme="{StaticResource CtkSlider}"
+                        Minimum="1" Maximum="11" TickFrequency="1" IsSnapToTickEnabled="True"
+                        VerticalAlignment="Center"/>
+                <Border Grid.Column="2" Background="{StaticResource ValueBoxBack}" CornerRadius="6"
+                        Width="44" Height="26" Margin="8,0">
+                    <TextBlock x:Name="FingerValue" Text="∞" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                </Border>
+                <Button Grid.Column="3" Theme="{StaticResource CtkButton}" Width="30" Click="ResetFinger">
+                    <Image Source="/Assets/reset.png" Width="16" Height="16"/>
+                </Button>
+            </Grid>
+
+            <!-- speed -->
+            <Grid Grid.Row="7" Margin="0,8,0,0" ColumnDefinitions="Auto,*,Auto,Auto">
+                <TextBlock Grid.Column="0" Text="Speed" FontSize="14" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <Slider Grid.Column="1" x:Name="SpeedSlider" Theme="{StaticResource CtkSlider}"
+                        Minimum="1" Maximum="500" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="2" x:Name="SpeedEntry" Theme="{StaticResource CtkEntry}"
+                         Width="50" Margin="8,0" TextAlignment="Center" KeyUp="SpeedEntryChanged"/>
+                <Button Grid.Column="3" Theme="{StaticResource CtkButton}" Width="30" Click="ResetSpeed">
+                    <Image Source="/Assets/reset.png" Width="16" Height="16"/>
+                </Button>
+            </Grid>
+
+            <!-- play / stop / timeline -->
+            <Grid Grid.Row="8" Margin="0,14,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button x:Name="PlayButton" Content="Play" Width="80" Click="OnPlay"
+                            Theme="{StaticResource CtkButton}"
+                            Background="{StaticResource PlayColor}" Tag="{StaticResource PlayHover}"/>
+                    <Button x:Name="StopButton" Content="Stop" Width="80" Margin="10,0,0,0" Click="OnStop" IsEnabled="False"
+                            Theme="{StaticResource CtkButton}"
+                            Background="{StaticResource StopColor}" Tag="{StaticResource StopHover}"/>
+                </StackPanel>
+                <TextBlock x:Name="Timeline" Text="0:00:00 / 0:00:00" FontSize="14"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
