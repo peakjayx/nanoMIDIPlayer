@@ -59,7 +59,15 @@ anwählen.
 - Send Mode: scancode (games) / virtualkey / unicode (browser)
   — auf macOS sind scancode und virtualkey identisch, weil CGEvent nur
   virtual keycodes kennt
-- Globale Hotkeys auf beiden Plattformen
+- Globale Hotkeys auf beiden Plattformen — **pass-through**: die App reagiert
+  auf F1–F5, die Taste kommt trotzdem im fokussierten Spiel an (F3/F5 bleiben
+  in Minecraft nutzbar). Kein `RegisterHotKey`, das Tasten wegfrisst.
+- Akkord-Erkennung: gleichzeitig gespielte (und optional losgelassene) Noten
+  werden erkannt und um einstellbare Millisekunden versetzt angeschlagen,
+  statt als Block — klingt menschlicher. Regler in den Settings.
+- Spulleiste: vor-/zurückspulen per Slider oder ±10s-Buttons
+- Autoupdater: prüft beim Start die GitHub-Releases, lädt die neue Version
+  und startet sie (Windows tauscht die laufende .exe direkt aus)
 - Config in `Documents/nanoMIDIPlayer/config.json` (python-kompatibel, gleicher
   Pfad unter Windows und macOS)
 

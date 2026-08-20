@@ -63,6 +63,31 @@
                     </StackPanel>
                 </Grid>
 
+                <!-- Akkord-Versatz -->
+                <TextBlock Text="Akkord-Versatz" FontSize="20" Margin="0,20,0,0"/>
+                <StackPanel Margin="4,10,0,0">
+                    <CheckBox x:Name="ChordOffsetEnabled" Content="Chord Offset" Margin="0,4"/>
+                    <Grid Margin="0,2" ColumnDefinitions="140,*,Auto">
+                        <TextBlock Text="Versatz (ms)" VerticalAlignment="Center" FontSize="13"/>
+                        <Slider Grid.Column="1" x:Name="ChordSpreadSlider" Theme="{StaticResource CtkSlider}"
+                                Minimum="0" Maximum="200" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="2" x:Name="ChordSpreadEntry" Theme="{StaticResource CtkEntry}"
+                                 Width="55" Margin="8,0,0,0" TextAlignment="Center" KeyUp="ChordSpreadEntryChg"/>
+                    </Grid>
+                    <Grid Margin="0,2" ColumnDefinitions="175,*,Auto">
+                        <TextBlock Text="Erkennungsfenster (ms)" VerticalAlignment="Center" FontSize="13"/>
+                        <Slider Grid.Column="1" x:Name="ChordWindowSlider" Theme="{StaticResource CtkSlider}"
+                                Minimum="1" Maximum="100" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="2" x:Name="ChordWindowEntry" Theme="{StaticResource CtkEntry}"
+                                 Width="55" Margin="8,0,0,0" TextAlignment="Center" KeyUp="ChordWindowEntryChg"/>
+                    </Grid>
+                    <CheckBox x:Name="ChordApplyRelease" Content="Auch beim Loslassen" Margin="0,8,0,4"/>
+                    <CheckBox x:Name="ChordRandomOrder" Content="Zufällige Reihenfolge" Margin="0,4"/>
+
+                    <TextBlock Foreground="#737373" FontSize="11" TextWrapping="Wrap" Margin="0,8,0,0"
+                               Text="Gleichzeitig gespielte noten werden erkannt und um die eingestellte zeit versetzt angeschlagen, damit es menschlicher klingt."/>
+                </StackPanel>
+
                 <!-- Appearance -->
                 <TextBlock Text="Appearance Settings" FontSize="20" Margin="0,20,0,0"/>
                 <StackPanel Margin="4,10,0,0">

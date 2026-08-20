@@ -26,9 +26,15 @@ public partial class SettingsView : UserControl {
             cb.IsCheckedChanged += Save;
         RandomFail.IsCheckedChanged += SaveRandomFail;
 
+        ChordOffsetEnabled.IsCheckedChanged += SaveChordOffset;
+        ChordApplyRelease.IsCheckedChanged += SaveChordOffset;
+        ChordRandomOrder.IsCheckedChanged += SaveChordOffset;
+
         OnValue(NoteLengthSlider, NoteLenSlider);
         OnValue(SpeedFailSlider, SpeedFailSliderChg);
         OnValue(TransFailSlider, TransFailSliderChg);
+        OnValue(ChordSpreadSlider, ChordSpreadSliderChg);
+        OnValue(ChordWindowSlider, ChordWindowSliderChg);
     }
 
     static void OnValue(Slider s, Action<double> cb) =>
@@ -50,6 +56,15 @@ public partial class SettingsView : UserControl {
         SpeedFailEntry.Text = ((int)p.randomFail.speed).ToString();
         TransFailSlider.Value = p.randomFail.transpose;
         TransFailEntry.Text = ((int)p.randomFail.transpose).ToString();
+
+        var co = p.chordOffset;
+        ChordOffsetEnabled.IsChecked = co.enabled;
+        ChordSpreadSlider.Value = Math.Clamp(co.spreadMs, 0, 200);
+        ChordSpreadEntry.Text = ((int)co.spreadMs).ToString();
+        ChordWindowSlider.Value = Math.Clamp(co.detectWindowMs, 1, 100);
+        ChordWindowEntry.Text = ((int)co.detectWindowMs).ToString();
+        ChordApplyRelease.IsChecked = co.applyToRelease;
+        ChordRandomOrder.IsChecked = co.randomOrder;
 
         SendMode.ItemsSource = new[] { "scancode", "virtualkey", "unicode" };
         SendMode.SelectedItem = p.sendMode;
@@ -136,6 +151,45 @@ public partial class SettingsView : UserControl {
         double v = PD(TransFailEntry.Text, 5);
         Config.Data.midiPlayer.randomFail.transpose = v;
         TransFailSlider.Value = Math.Min(100, v);
+        Config.Save();
+    }
+
+    // --- akkord-versatz ---
+    void SaveChordOffset(object? s, RoutedEventArgs e) {
+        if (init) return;
+        var co = Config.Data.midiPlayer.chordOffset;
+        co.enabled = ChordOffsetEnabled.IsChecked == true;
+        co.applyToRelease = ChordApplyRelease.IsChecked == true;
+        co.randomOrder = ChordRandomOrder.IsChecked == true;
+        Config.Save();
+        Hint();
+    }
+
+    void ChordSpreadSliderChg(double raw) {
+        if (init) return;
+        Config.Data.midiPlayer.chordOffset.spreadMs = Math.Round(raw);
+        ChordSpreadEntry.Text = ((int)raw).ToString();
+        Config.Save();
+    }
+    void ChordSpreadEntryChg(object? s, KeyEventArgs e) {
+        if (init) return;
+        double v = PD(ChordSpreadEntry.Text, 0);
+        Config.Data.midiPlayer.chordOffset.spreadMs = v;
+        ChordSpreadSlider.Value = Math.Clamp(v, 0, 200);
+        Config.Save();
+    }
+
+    void ChordWindowSliderChg(double raw) {
+        if (init) return;
+        Config.Data.midiPlayer.chordOffset.detectWindowMs = Math.Round(raw);
+        ChordWindowEntry.Text = ((int)raw).ToString();
+        Config.Save();
+    }
+    void ChordWindowEntryChg(object? s, KeyEventArgs e) {
+        if (init) return;
+        double v = PD(ChordWindowEntry.Text, 15);
+        Config.Data.midiPlayer.chordOffset.detectWindowMs = v;
+        ChordWindowSlider.Value = Math.Clamp(v, 1, 100);
         Config.Save();
     }
 

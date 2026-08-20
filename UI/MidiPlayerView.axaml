@@ -4,7 +4,7 @@
              FontFamily="{StaticResource MonoFont}">
     <Border Background="{StaticResource MidiBack}">
         <Grid Margin="12,8,12,8"
-              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
             <!-- output device row -->
             <Grid Grid.Row="0" Margin="0,4,0,0">
@@ -119,8 +119,22 @@
                 </Button>
             </Grid>
 
+            <!-- spulleiste -->
+            <Grid Grid.Row="8" Margin="0,10,0,0" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+                <TextBlock Grid.Column="0" x:Name="SeekCurrentTime" Text="0:00:00" FontSize="13"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <Button Grid.Column="1" x:Name="SeekBackBtn" Content="-10s" Theme="{StaticResource CtkButton}"
+                        Width="50" IsEnabled="False" Click="SeekBack"/>
+                <Slider Grid.Column="2" x:Name="SeekSlider" Theme="{StaticResource CtkSlider}"
+                        Minimum="0" Maximum="0" IsEnabled="False" VerticalAlignment="Center" Margin="8,0"/>
+                <Button Grid.Column="3" x:Name="SeekFwdBtn" Content="+10s" Theme="{StaticResource CtkButton}"
+                        Width="50" IsEnabled="False" Click="SeekForward"/>
+                <TextBlock Grid.Column="4" x:Name="SeekTotalTime" Text="0:00:00" FontSize="13"
+                           VerticalAlignment="Center" Margin="8,0,0,0"/>
+            </Grid>
+
             <!-- play / stop / timeline -->
-            <Grid Grid.Row="8" Margin="0,14,0,0">
+            <Grid Grid.Row="9" Margin="0,14,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button x:Name="PlayButton" Content="Play" Width="80" Click="OnPlay"
                             Theme="{StaticResource CtkButton}"

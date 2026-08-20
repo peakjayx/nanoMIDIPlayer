@@ -14,6 +14,8 @@ public partial class MidiPlayerView : UserControl {
     readonly PlaybackEngine engine;
     readonly List<string> lines = new();
     bool init = true;
+    bool draggingSeek = false;   // true waehrend der nutzer den spul-slider zieht
+    bool updatingSeek = false;   // true waehrend wir den slider programmatisch setzen (kein Seek() ausloesen)
 
     static readonly (int off, string label)[] PitchMap = {
         (-24, "Lowest"), (-12, "Low"), (0, "Middle"), (12, "High"), (24, "Highest")
@@ -27,6 +29,7 @@ public partial class MidiPlayerView : UserControl {
         engine.OnLog += Log;
         engine.OnTime += t => Dispatcher.UIThread.Post(() => Timeline.Text = t);
         engine.OnStopped += () => Dispatcher.UIThread.Post(ResetPlayState);
+        engine.OnProgress += (pos, dur) => Dispatcher.UIThread.Post(() => UpdateSeekProgress(pos, dur));
 
         WireEvents();
         LoadState();
@@ -45,6 +48,15 @@ public partial class MidiPlayerView : UserControl {
 
         OnValue(FingerSlider, FingerChanged);
         OnValue(SpeedSlider, SpeedChanged);
+        OnValue(SeekSlider, SeekSliderChanged);
+
+        // seek erst beim loslassen ausloesen, nicht bei jedem zwischenwert
+        // (sonst hunderte Seek()-aufrufe waehrend des ziehens)
+        SeekSlider.PointerPressed += (_, _) => draggingSeek = true;
+        SeekSlider.PointerReleased += (_, _) => {
+            draggingSeek = false;
+            if (engine.Duration > 0) engine.Seek(SeekSlider.Value);
+        };
     }
 
     static void OnValue(Slider s, Action<double> cb) =>
@@ -196,6 +208,38 @@ public partial class MidiPlayerView : UserControl {
         SpeedEntry.Text = ((int)pct).ToString();
     }
 
+    // --- seek ---
+    static string FormatTime(double seconds) {
+        if (seconds < 0 || double.IsNaN(seconds)) seconds = 0;
+        return TimeSpan.FromSeconds(seconds).ToString(@"h\:mm\:ss");
+    }
+
+    // laeuft ca. 10x/sekunde per engine.OnProgress mit
+    void UpdateSeekProgress(double pos, double dur) {
+        bool loaded = dur > 0;
+        SeekSlider.IsEnabled = loaded;
+        SeekBackBtn.IsEnabled = loaded;
+        SeekFwdBtn.IsEnabled = loaded;
+
+        updatingSeek = true;
+        SeekSlider.Maximum = loaded ? dur : 0;
+        if (!draggingSeek) SeekSlider.Value = loaded ? pos : 0;
+        updatingSeek = false;
+
+        SeekTotalTime.Text = FormatTime(dur);
+        if (!draggingSeek) SeekCurrentTime.Text = FormatTime(pos);
+    }
+
+    // reagiert auf jeden zwischenwert (auch waehrend des ziehens) - nur anzeige,
+    // Seek() selbst passiert erst bei PointerReleased
+    void SeekSliderChanged(double raw) {
+        if (updatingSeek) return;
+        SeekCurrentTime.Text = FormatTime(raw);
+    }
+
+    void SeekBack(object? s, RoutedEventArgs e) => engine.Seek(engine.Position - 10);
+    void SeekForward(object? s, RoutedEventArgs e) => engine.Seek(engine.Position + 10);
+
     // --- transport ---
     public void Play() {
         var f = Config.Data.midiPlayer.currentFile;
@@ -220,5 +264,13 @@ public partial class MidiPlayerView : UserControl {
     void ResetPlayState() {
         PlayButton.IsEnabled = true;
         StopButton.IsEnabled = false;
+        SeekSlider.IsEnabled = false;
+        SeekBackBtn.IsEnabled = false;
+        SeekFwdBtn.IsEnabled = false;
+        updatingSeek = true;
+        SeekSlider.Value = 0;
+        updatingSeek = false;
+        SeekCurrentTime.Text = "0:00:00";
+        SeekTotalTime.Text = "0:00:00";
     }
 }
